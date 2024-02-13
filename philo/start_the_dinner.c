@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:50:38 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 15:50:48 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/13 16:30:21 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ bool	start_the_dinner(t_table *table)
 	if (table->number_of_philosophers == 1)
 	{
 		ft_usleep(table->time_to_die);
-		print_message(&table->philos[0], "is dead.");
+		print_message(&table->philos[0], "died.");
 		return (true);
 	}
 	if (!philosophers_start_their_routine(table))
