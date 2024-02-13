@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_arguments_validity.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/13 15:54:40 by dlacuey           #+#    #+#             */
+/*   Updated: 2024/02/13 15:54:43 by dlacuey          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static bool	check_max_philo_number(char *argument)
@@ -23,6 +35,11 @@ static bool	check_argument_value(char *argument, int index)
 		if (!ft_isdigit(argument[i]))
 		{
 			printf("Error: argument %d is not a positive number\n", index);
+			return (false);
+		}
+		if (ft_atoi(argument) > INT_MAX)
+		{
+			printf("Error: argument %d is too big\n", index);
 			return (false);
 		}
 		i++;

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_the_dinner.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/13 15:50:38 by dlacuey           #+#    #+#             */
+/*   Updated: 2024/02/13 15:50:48 by dlacuey          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static bool	philosophers_start_their_routine(t_table *table)
 {
-	int	index;
+	size_t	index;
 
 	index = 0;
 	while (index < table->number_of_philosophers)
@@ -11,7 +23,6 @@ static bool	philosophers_start_their_routine(t_table *table)
 				&philosophers_routine, &table->philos[index]) != 0)
 		{
 			clean_the_forks(table, table->number_of_philosophers);
-			kill_every_philosophers(table, index);
 			return (false);
 		}
 		index++;
@@ -21,7 +32,7 @@ static bool	philosophers_start_their_routine(t_table *table)
 
 static bool	wait_philosophers_finish_their_dinner(t_table *table)
 {
-	int	index;
+	size_t	index;
 
 	index = 0;
 	while (index < table->number_of_philosophers)
@@ -49,5 +60,6 @@ bool	start_the_dinner(t_table *table)
 		return (false);
 	if (!wait_philosophers_finish_their_dinner(table))
 		return (false);
+	pthread_mutex_unlock(&table->write_to_sign_of_death);
 	return (true);
 }

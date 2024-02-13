@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prepare_the_table.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/13 15:30:06 by dlacuey           #+#    #+#             */
+/*   Updated: 2024/02/13 15:34:21 by dlacuey          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	table_take_the_timers(t_table *table, int argc, char **argv)
@@ -15,7 +27,7 @@ static void	table_take_the_timers(t_table *table, int argc, char **argv)
 
 static bool	put_the_forks_on_the_table(t_table *table)
 {
-	int	index;
+	size_t	index;
 
 	index = 0;
 	while (index < table->number_of_philosophers)
@@ -31,58 +43,28 @@ static bool	put_the_forks_on_the_table(t_table *table)
 	return (true);
 }
 
-void	assign_forks_to_philo(t_philo *philo, int number_of_philos,
-				pthread_mutex_t *forks)
+static bool	table_prepare_the_right_to_write(t_table *table)
 {
-	int	index;
-
-	index = 0;
-	while (index < number_of_philos)
+	if (pthread_mutex_init(&table->right_to_write, NULL) != 0)
 	{
-		philo[index].left_fork = &forks[index];
-		if (index == 0)
-			philo[index].right_fork = &forks[number_of_philos - 1];
-		else
-			philo[index].right_fork = &forks[index - 1];
-		index++;
+		printf("Error: mutex init failed\n");
+		return (false);
 	}
-}
-
-void	assign_id_to_philo(t_philo *philo, int number_of_philosophers)
-{
-	int index;
-
-	index = 0;
-	while (index < number_of_philosophers)
+	if (pthread_mutex_init(&table->write_to_sign_of_death, NULL) != 0)
 	{
-		philo[index].id = index + 1;
-		index++;
+		printf("Error: mutex init failed\n");
+		pthread_mutex_destroy(&table->right_to_write);
+		return (false);
 	}
-}
-
-void	assign_table_to_philo(t_table *table)
-{
-	int	index;
-
-	index = 0;
-	while (index < table->number_of_philosophers)
-	{
-		table->philos[index].table = table;
-		index++;
-	}
-}
-
-void	philos_take_their_seats(t_table *table)
-{
-	assign_id_to_philo(table->philos, table->number_of_philosophers);
-	assign_forks_to_philo(table->philos, table->number_of_philosophers,
-		table->forks);
-	assign_table_to_philo(table);
+	table->sign_of_death = false;
+	return (true);
 }
 
 bool	prepare_the_table(t_table *table, int argc, char **argv)
 {
 	table_take_the_timers(table, argc, argv);
+	if (!table_prepare_the_right_to_write(table))
+		return (false);
 	if (!put_the_forks_on_the_table(table))
 		return (false);
 	philos_take_their_seats(table);

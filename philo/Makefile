@@ -6,13 +6,13 @@
 #    By: jdenis <jdenis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 21:05:04 by dlacuey           #+#    #+#              #
-#    Updated: 2024/01/30 18:22:31 by dlacuey          ###   ########.fr        #
+#    Updated: 2024/02/13 15:45:21 by dlacuey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 LDFLAGS = $(LIBFT) -lreadline
 
@@ -26,6 +26,8 @@ OBJS =																		\
 				libft_func.o												\
 				check_arguments_validity.o									\
 				prepare_the_table.o											\
+				philos_take_their_seats.o									\
+				is_the_meal_over.o											\
 				get_time.o													\
 				clean_the_table.o											\
 				print_message.o												\
