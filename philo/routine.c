@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:38:44 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 15:49:52 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/13 16:02:37 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static bool	philosopher_eat(t_philo *philo)
 		return (unlock_forks(philo));
 	if (print_message(philo, "is eating"))
 		return (unlock_forks(philo));
-	philo->last_meal_time = get_time_in_ms();
 	philo->number_of_meals++;
 	ft_usleep(philo->table->time_to_eat);
+	philo->last_meal_time = get_time_in_ms();
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	return (false);
