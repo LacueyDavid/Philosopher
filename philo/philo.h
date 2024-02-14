@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:50:54 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 15:54:14 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/14 18:15:27 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_philo
 
 typedef struct s_table
 {
+	pthread_t		thread;
 	size_t			dinner_start_time;
 	size_t			number_of_philosophers;
 	size_t			time_to_die;

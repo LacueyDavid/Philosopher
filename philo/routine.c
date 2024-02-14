@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:38:44 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/14 14:56:07 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/14 18:54:24 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static bool	odd_philosopher_eat(t_philo *philo)
 static bool	philosopher_eat(t_philo *philo)
 {
 	if (philo->id % 2)
-		return (odd_philosopher_eat(philo), false);
+	{
+		odd_philosopher_eat(philo);
+		return (false);
+	}
 	pthread_mutex_lock(philo->right_fork);
 	if (print_message(philo, "has taken a fork"))
 		return (pthread_mutex_unlock(philo->right_fork), true);
@@ -79,7 +82,6 @@ static bool	philosopher_think(t_philo *philo)
 void	*philosophers_routine(void *arg)
 {
 	t_philo	*philo;
-	size_t	time;
 
 	philo = (t_philo *)arg;
 	philosopher_think(philo);
@@ -87,13 +89,13 @@ void	*philosophers_routine(void *arg)
 	{
 		if (philosopher_eat(philo))
 			break ;
+		is_the_meal_over(philo);// ajouter une variable a modifier pour le
+								// nombre de seconde quil lui reste a vivre sil
+								// meurt pendant le sleep
 		if (philosopher_sleep(philo))
 			break ;
 		if (philosopher_think(philo))
 			break ;
 	}
-	time = get_time_in_ms() - philo->table->dinner_start_time;
-	if (philo->id == philo->table->sign_of_death)
-		printf("%ld %ld %s\n", time, philo->table->sign_of_death, "died");
 	return (NULL);
 }
