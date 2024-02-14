@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:50:38 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 16:30:21 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:06:54 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ bool	start_the_dinner(t_table *table)
 		return (false);
 	if (!wait_philosophers_finish_their_dinner(table))
 		return (false);
-	pthread_mutex_unlock(&table->write_to_sign_of_death);
+	// pthread_mutex_unlock(&table->write_to_sign_of_death);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:36:41 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 15:37:43 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:06:54 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ bool	print_message(t_philo *philo, char *message)
 		pthread_mutex_unlock(&philo->table->right_to_write);
 		return (true);
 	}
-	else
-		printf("%ld %ld %s\n", time, philo->id, message);
+	printf("%ld %ld %s\n", time, philo->id, message);
 	pthread_mutex_unlock(&philo->table->right_to_write);
 	return (false);
 }
