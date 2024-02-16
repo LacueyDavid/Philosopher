@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:38:44 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/16 16:17:17 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 17:34:11 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ static bool	philosopher_sleep(t_philo *philo)
 
 static bool	philosopher_think(t_philo *philo)
 {
+	int	time;
 	if (print_message(philo, "is thinking"))
 		return (true);
-	ft_usleep(philo->table->time_to_eat + (philo->table->time_to_sleep / 2));
+	time = philo->table->time_to_die - philo->table->time_to_eat - philo->table->time_to_sleep - 8;
+	if (time > 0)
+		ft_usleep(time);
 	return (false);
 }
 
@@ -88,6 +91,8 @@ void	*philosophers_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	print_message(philo, "is thinking");
+	if (!(philo->id % 2))
+		ft_usleep(2);
 	while (!is_the_meal_over(philo))
 	{
 		if (philosopher_eat(philo))
