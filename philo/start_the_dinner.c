@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:50:38 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/16 16:53:42 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 18:36:18 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,16 @@ void	check_philos_die(t_table *table)
 	while (index < table->number_of_philosophers)
 	{
 		time = get_time_in_ms();
+		pthread_mutex_lock(&table->philos[index].number_of_meals_mutex);
 		if (time - table->philos[index].last_meal_time > table->time_to_die)
 		{
 			pthread_mutex_lock(&table->write_to_sign_of_death);
 			table->sign_of_death = table->philos[index].id;
 			pthread_mutex_unlock(&table->write_to_sign_of_death);
+			pthread_mutex_unlock(&table->philos[index].number_of_meals_mutex);
 			break ;
 		}
+		pthread_mutex_unlock(&table->philos[index].number_of_meals_mutex);
 		index++;
 	}
 	return ;

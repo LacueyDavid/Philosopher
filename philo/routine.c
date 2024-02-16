@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:38:44 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/16 17:34:11 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 18:38:46 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static bool	odd_philosopher_eat(t_philo *philo)
 		return (unlock_forks(philo));
 	pthread_mutex_lock(&philo->number_of_meals_mutex);
 	philo->number_of_meals++;
-	pthread_mutex_unlock(&philo->number_of_meals_mutex);
 	philo->last_meal_time = get_time_in_ms();
+	pthread_mutex_unlock(&philo->number_of_meals_mutex);
 	ft_usleep(philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -50,9 +50,9 @@ static bool	pair_philosopher_eat(t_philo *philo)
 	if (print_message(philo, "is eating"))
 		return (unlock_forks(philo));
 	pthread_mutex_lock(&philo->number_of_meals_mutex);
+	philo->last_meal_time = get_time_in_ms();
 	philo->number_of_meals++;
 	pthread_mutex_unlock(&philo->number_of_meals_mutex);
-	philo->last_meal_time = get_time_in_ms();
 	ft_usleep(philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -61,7 +61,7 @@ static bool	pair_philosopher_eat(t_philo *philo)
 
 static bool	philosopher_eat(t_philo *philo)
 {
-	if (philo->id % 2)
+	if (philo->id % 2 != 0)
 		return (odd_philosopher_eat(philo));
 	return (pair_philosopher_eat(philo));
 }
@@ -79,7 +79,10 @@ static bool	philosopher_think(t_philo *philo)
 	int	time;
 	if (print_message(philo, "is thinking"))
 		return (true);
-	time = philo->table->time_to_die - philo->table->time_to_eat - philo->table->time_to_sleep - 8;
+	if (philo->table->number_of_philosophers % 2 == 0)
+		time = philo->table->time_to_eat - philo->table->time_to_sleep;
+	else
+		time = 2 * philo->table->time_to_eat - philo->table->time_to_sleep;
 	if (time > 0)
 		ft_usleep(time);
 	return (false);
@@ -91,7 +94,7 @@ void	*philosophers_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	print_message(philo, "is thinking");
-	if (!(philo->id % 2))
+	if (philo->id % 2 == 0)
 		ft_usleep(2);
 	while (!is_the_meal_over(philo))
 	{
