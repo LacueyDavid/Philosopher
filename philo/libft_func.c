@@ -6,11 +6,21 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:54:27 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 15:54:28 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 15:25:24 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_strlen(const char *s)
+{
+	int	index;
+
+	index = 0;
+	while (s[index])
+		index++;
+	return (index);
+}
 
 static int	skip_space(const char *nptr)
 {

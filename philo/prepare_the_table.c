@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:30:06 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 15:34:21 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 16:15:51 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ bool	prepare_the_table(t_table *table, int argc, char **argv)
 		return (false);
 	if (!put_the_forks_on_the_table(table))
 		return (false);
-	philos_take_their_seats(table);
+	if (!philos_take_their_seats(table))
+	{
+		clean_the_forks(table, table->number_of_philosophers);
+		return (false);
+	}
 	return (true);
 }

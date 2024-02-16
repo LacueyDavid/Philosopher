@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:50:54 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/14 18:15:27 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 16:13:41 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_philo
 {
 	size_t			id;
 	size_t			number_of_meals;
+	pthread_mutex_t	number_of_meals_mutex;
 	size_t			last_meal_time;
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
@@ -48,7 +49,7 @@ typedef struct s_table
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	int				times_each_philosopher_must_eat;
-	size_t			sign_of_death;
+	int				sign_of_death;
 	pthread_mutex_t	write_to_sign_of_death;
 	pthread_mutex_t	right_to_write;
 	pthread_mutex_t	forks[MAX_PHILOS];
@@ -59,9 +60,10 @@ bool	check_arguments_validity(int argc, char **argv);
 
 bool	ft_isdigit(int c);
 int		ft_atoi(const char *nptr);
+int		ft_strlen(const char *s);
 
 bool	prepare_the_table(t_table *table, int argc, char **argv);
-void	philos_take_their_seats(t_table *table);
+bool	philos_take_their_seats(t_table *table);
 
 void	clean_the_forks(t_table *table, int size_to_clear);
 void	clean_the_table(t_table *table);

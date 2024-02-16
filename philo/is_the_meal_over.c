@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:44:19 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/14 15:56:18 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 16:24:04 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,14 @@ bool	is_the_meal_over(t_philo *philo)
 {
 	if (sign_of_death_is_set(philo))
 		return (true);
-	else if (a_philosophe_die_of_starvation(philo))
+	if (a_philosophe_die_of_starvation(philo))
 		return (true);
-	else if (philo->table->times_each_philosopher_must_eat == -1)
+	if (philo->table->times_each_philosopher_must_eat == -1)
 		return (false);
-	else if ((int)philo->number_of_meals
+	pthread_mutex_lock(&philo->number_of_meals_mutex);
+	if ((int)philo->number_of_meals
 		>= philo->table->times_each_philosopher_must_eat)
 		return (true);
+	pthread_mutex_unlock(&philo->number_of_meals_mutex);
 	return (false);
 }

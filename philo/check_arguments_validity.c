@@ -6,7 +6,7 @@
 /*   By: dlacuey <dlacuey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:54:40 by dlacuey           #+#    #+#             */
-/*   Updated: 2024/02/13 15:54:43 by dlacuey          ###   ########.fr       */
+/*   Updated: 2024/02/16 15:24:30 by dlacuey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,51 @@ static bool	check_max_philo_number(char *argument)
 	return (true);
 }
 
+bool	bigger_nbr(char *nbr, char *max)
+{
+	size_t	index;
+
+	index = 0;
+	if (ft_strlen(nbr) > ft_strlen(max))
+		return (1);
+	if (ft_strlen(nbr) < ft_strlen(max))
+		return (0);
+	while (nbr[index] && max[index])
+	{
+		if (nbr[index] > max[index])
+			return (1);
+		index++;
+	}
+	return (0);
+}
+
+bool	smaller_nbr(char *nbr, char *min)
+{
+	size_t	index;
+
+	index = 0;
+	nbr++;
+	min++;
+	if (ft_strlen(nbr) > ft_strlen(min))
+		return (1);
+	if (ft_strlen(nbr) < ft_strlen(min))
+		return (0);
+	while (nbr[index] && min[index])
+	{
+		if (nbr[index] > min[index])
+			return (1);
+		index++;
+	}
+	return (0);
+}
+
+bool	between_max_min(char *nbr)
+{
+	if (nbr[0] == '-')
+		return (smaller_nbr(nbr, "-2147483648"));
+	return (bigger_nbr(nbr,       "2147483647"));
+}
+
 static bool	check_argument_value(char *argument, int index)
 {
 	int	i;
@@ -37,7 +82,7 @@ static bool	check_argument_value(char *argument, int index)
 			printf("Error: argument %d is not a positive number\n", index);
 			return (false);
 		}
-		if (ft_atoi(argument) > INT_MAX)
+		if (between_max_min(argument) == 1)
 		{
 			printf("Error: argument %d is too big\n", index);
 			return (false);
